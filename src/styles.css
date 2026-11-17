@@ -1,0 +1,120 @@
+/* Wawa Qhali palette (same as the mobile app) */
+:root {
+  --cream: #f6efe4;
+  --sand: #ede1cf;
+  --toast: #dcc6a8;
+  --caramel: #8c5a3a;
+  --caramel-dark: #6e4529;
+  --brown: #6b4429;
+  --ink: #2a221c;
+  --ink-soft: #4e4136;
+  --muted: #6b5d50;
+  --paper: #fffcf7;
+  --line: #e4d5bf;
+  --on-caramel: #fff8ee;
+  --green: #2e6b3f;
+  --green-bg: #ddeedf;
+  --amber-text: #7a4e12;
+  --amber-bg: #f3e4c8;
+  --olive-text: #545133;
+  --olive-bg: #e9e7d6;
+  --alarm: #a33a2a;
+  --alarm-text: #8a2e20;
+  --alarm-bg: #f6e1d9;
+  --alarm-line: #ebc5b8;
+  --high-bg: #f1e0d2;
+
+  --font-title: 'Playfair Display', Georgia, serif;
+  --font-body: 'Montserrat', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+a {
+  color: var(--caramel);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+h1,
+h2 {
+  font-family: var(--font-title);
+  font-weight: 600;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pill--sand { background: var(--sand); color: var(--brown); }
+.pill--amber, .pill--warning { background: var(--amber-bg); color: var(--amber-text); }
+.pill--olive, .pill--neutral { background: var(--olive-bg); color: var(--olive-text); }
+.pill--green { background: var(--green-bg); color: var(--green); }
+.pill--high { background: var(--high-bg); color: var(--brown); }
+
+.btn {
+  height: 50px;
+  padding: 0 22px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn--primary {
+  border: none;
+  background: var(--caramel);
+  color: var(--on-caramel);
+}
+.btn--primary:hover { background: var(--caramel-dark); }
+.btn--secondary {
+  border: 1.5px solid var(--caramel);
+  background: none;
+  color: var(--caramel);
+}
+.btn--text {
+  border: none;
+  background: none;
+  color: var(--brown);
+  padding: 0 14px;
+  height: 44px;
+}
+
+.card {
+  border-radius: 22px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: var(--muted);
+}
+
+:focus-visible {
+  outline: 3px solid var(--toast);
+  outline-offset: 2px;
+}
