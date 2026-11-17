@@ -1,0 +1,57 @@
+{
+  "doctor": {
+    "email": "medico@wawaqhali.pe",
+    "password": "demo1234",
+    "name": "Médico de prueba",
+    "cmp": "000000"
+  },
+  "symptomQuestions": [
+    "Picazón",
+    "Ronchas que cambian de lugar",
+    "Tiempo con ronchas",
+    "Extensión de las ronchas",
+    "Comió algo nuevo, medicamento o picadura"
+  ],
+  "cases": [
+    {
+      "id": "0012",
+      "donatedAt": "05/11/2026 a las 10:24",
+      "prediction": "compatible",
+      "confidence": 0.91,
+      "risk": "low",
+      "image": null,
+      "skinTone": "#CF9C7E",
+      "answers": ["Sí", "Sí", "Menos de 24 horas", "Una zona", "Sí"]
+    },
+    {
+      "id": "0013",
+      "donatedAt": "05/11/2026 a las 13:02",
+      "prediction": "not_compatible",
+      "confidence": 0.84,
+      "risk": "low",
+      "image": null,
+      "skinTone": "#D9AE8E",
+      "answers": ["No", "No", "Más de 3 días", "Una zona", "No"]
+    },
+    {
+      "id": "0014",
+      "donatedAt": "05/11/2026 a las 18:47",
+      "prediction": "compatible",
+      "confidence": 0.78,
+      "risk": "moderate",
+      "image": null,
+      "skinTone": "#B9805F",
+      "answers": ["Sí", "Sí", "De 1 a 3 días", "Varias zonas", "No sé"]
+    },
+    {
+      "id": "0015",
+      "donatedAt": "06/11/2026 a las 08:15",
+      "prediction": "indeterminate",
+      "confidence": 0.52,
+      "risk": "low",
+      "image": null,
+      "skinTone": "#E0B89A",
+      "answers": ["No sé", "No sé", "Menos de 24 horas", "Una zona", "No"]
+    }
+  ]
+}
