@@ -1,46 +1,28 @@
 <script setup>
-// Shows the donated photo. While there are no real photos (image: null),
-// it draws a placeholder lesion like the mockup.
-import { computed, useId } from 'vue'
+// Foto donada, leída con el enlace temporal del backend (vence en 5 minutos).
+import { ref, watch } from 'vue'
 
 const props = defineProps({
-  image: { type: String, default: null },
-  prediction: { type: String, required: true },
-  skinTone: { type: String, default: '#CF9C7E' },
+  url: { type: String, required: true },
 })
+const emit = defineEmits(['reload'])
 
-const filterId = `blur-${useId()}`
-const showDots = computed(() => props.prediction === 'not_compatible')
-const blur = computed(() => (props.prediction === 'indeterminate' ? 5 : 2))
-
-const dots = [
-  [120, 90, 3], [132, 98, 2.2], [114, 106, 2.6], [140, 86, 2], [126, 114, 3.2],
-  [146, 104, 2.4], [108, 94, 2], [136, 120, 2.2], [226, 126, 2.8], [238, 134, 2.2],
-  [220, 140, 3], [244, 120, 2], [232, 148, 2.4], [250, 138, 2.6],
-]
+const failed = ref(false)
+watch(
+  () => props.url,
+  () => {
+    failed.value = false
+  },
+)
 </script>
 
 <template>
   <div class="lesion">
-    <img v-if="image" :src="image" alt="Foto donada de la lesión" />
-    <svg v-else viewBox="0 0 346 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <filter :id="filterId" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur :stdDeviation="blur" />
-        </filter>
-      </defs>
-      <rect width="346" height="200" :fill="skinTone" />
-      <g v-if="showDots" fill="#B0504A" opacity="0.8" :filter="`url(#${filterId})`">
-        <circle v-for="([cx, cy, r], i) in dots" :key="i" :cx="cx" :cy="cy" :r="r" />
-      </g>
-      <g v-else :filter="`url(#${filterId})`">
-        <ellipse cx="130" cy="104" rx="56" ry="40" fill="#D7806C" opacity="0.75" />
-        <ellipse cx="130" cy="104" rx="25" ry="17" fill="#EBC3AA" />
-        <ellipse cx="236" cy="66" rx="36" ry="28" fill="#D7806C" opacity="0.7" />
-        <ellipse cx="236" cy="66" rx="14" ry="10" fill="#EBC3AA" />
-        <ellipse cx="228" cy="150" rx="30" ry="22" fill="#D7806C" opacity="0.65" />
-      </g>
-    </svg>
+    <img v-if="!failed" :src="url" alt="Foto donada de la lesión" @error="failed = true" />
+    <div v-else class="lesion__error">
+      <p>No se pudo cargar la imagen. El enlace dura 5 minutos.</p>
+      <button type="button" class="btn btn--secondary" @click="emit('reload')">Volver a cargar</button>
+    </div>
 
     <span class="lesion__badge">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -56,13 +38,25 @@ const dots = [
 .lesion {
   position: relative;
   height: 380px;
+  background: var(--sand);
 }
-.lesion > img,
-.lesion > svg {
+.lesion > img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.lesion__error {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
 }
 .lesion__badge {
   position: absolute;

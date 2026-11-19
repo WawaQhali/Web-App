@@ -1,0 +1,159 @@
+{
+  "version": "v1",
+  "validado": false,
+  "validacion": {
+    "signos_de_alarma": "validados en la entrevista con la especialista (17/11/2026)",
+    "reglas_moderada": "pendientes de validar"
+  },
+  "mensaje_emergencia": "Llama al SAMU (106) y acude a la emergencia más cercana. Si su médico le indicó adrenalina autoinyectable, úsela como le indicaron.",
+  "preguntas": [
+    {
+      "id": "dificultad_respirar",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Tu hijo tiene dificultad para respirar o parece que le falta el aire?"
+    },
+    {
+      "id": "labios_morados",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Se le ponen morados los labios o la cara?"
+    },
+    {
+      "id": "tos_repentina",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Empezó a toser de repente, sin estar resfriado?"
+    },
+    {
+      "id": "hinchazon_cara",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Tiene hinchados los labios, la lengua, los párpados o la cara?"
+    },
+    {
+      "id": "dificultad_tragar",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Le cuesta tragar?"
+    },
+    {
+      "id": "angustia",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Está muy angustiado o inquieto, como si algo le pasara?"
+    },
+    {
+      "id": "vomitos_diarrea",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Vomita varias veces, tiene diarrea o dolor fuerte de barriga?"
+    },
+    {
+      "id": "decaimiento",
+      "tipo": "riesgo",
+      "respuesta": "si_no",
+      "texto": "¿Está muy decaído o se ha desmayado?"
+    },
+    {
+      "id": "picazon",
+      "tipo": "normal",
+      "respuesta": "si_no",
+      "texto": "¿Las ronchas le pican?"
+    },
+    {
+      "id": "ronchas_cambian",
+      "tipo": "normal",
+      "respuesta": "si_no",
+      "texto": "¿Las ronchas aparecen y desaparecen o cambian de lugar en pocas horas?"
+    },
+    {
+      "id": "tiempo_evolucion",
+      "tipo": "normal",
+      "respuesta": "opcion",
+      "texto": "¿Desde cuándo tiene las ronchas?",
+      "opciones": [
+        {
+          "id": "menos_24h",
+          "texto": "Menos de un día"
+        },
+        {
+          "id": "1_3_dias",
+          "texto": "Entre 1 y 3 días"
+        },
+        {
+          "id": "mas_3_dias",
+          "texto": "Más de 3 días"
+        }
+      ]
+    },
+    {
+      "id": "extension",
+      "tipo": "normal",
+      "respuesta": "opcion",
+      "texto": "¿Dónde están las ronchas?",
+      "opciones": [
+        {
+          "id": "una_zona",
+          "texto": "En una sola parte del cuerpo"
+        },
+        {
+          "id": "varias_zonas",
+          "texto": "En varias partes del cuerpo"
+        }
+      ]
+    },
+    {
+      "id": "desencadenante",
+      "tipo": "normal",
+      "respuesta": "opcion",
+      "texto": "¿Notaste algo que pudo causarlas?",
+      "opciones": [
+        {
+          "id": "infeccion",
+          "texto": "Estuvo enfermo hace poco (resfrío, fiebre o diarrea)"
+        },
+        {
+          "id": "alimento",
+          "texto": "Un alimento nuevo"
+        },
+        {
+          "id": "medicamento",
+          "texto": "Un medicamento"
+        },
+        {
+          "id": "picadura",
+          "texto": "Una picadura de insecto"
+        },
+        {
+          "id": "contacto",
+          "texto": "Contacto con algo nuevo (planta, animal, jabón o crema)"
+        },
+        {
+          "id": "no_se",
+          "texto": "No sé"
+        }
+      ]
+    },
+    {
+      "id": "muy_alergico",
+      "tipo": "normal",
+      "respuesta": "si_no",
+      "texto": "¿Tu hijo es muy alérgico o ha tenido antes una reacción fuerte?"
+    }
+  ],
+  "reglas_moderada": [
+    {
+      "pregunta": "tiempo_evolucion",
+      "valor": "mas_3_dias"
+    },
+    {
+      "pregunta": "extension",
+      "valor": "varias_zonas"
+    },
+    {
+      "pregunta": "muy_alergico",
+      "valor": true
+    }
+  ]
+}

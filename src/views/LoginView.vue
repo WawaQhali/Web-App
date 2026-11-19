@@ -3,21 +3,33 @@ import { ref } from 'vue'
 import AppLogo from '../components/AppLogo.vue'
 import { login } from '../services/auth.js'
 
+defineProps({
+  sessionExpired: { type: Boolean, default: false },
+})
 const emit = defineEmits(['logged-in'])
 
-const email = ref('')
+const username = ref('')
 const password = ref('')
 const showPassword = ref(false)
-const hasError = ref(false)
+const errorMessage = ref('')
+const loading = ref(false)
 
-function submit() {
-  const doctor = login(email.value, password.value)
-  if (!doctor) {
-    hasError.value = true
-    return
+const MESSAGES = {
+  401: 'Usuario o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.',
+  429: 'Demasiados intentos. Espera un minuto y vuelve a intentarlo.',
+  0: 'No se pudo conectar con el servidor de Wawa Qhali. Revisa tu conexión.',
+}
+
+async function submit() {
+  loading.value = true
+  errorMessage.value = ''
+  try {
+    emit('logged-in', await login(username.value, password.value))
+  } catch (error) {
+    errorMessage.value = MESSAGES[error.status] ?? 'Ocurrió un error. Inténtalo de nuevo.'
+  } finally {
+    loading.value = false
   }
-  hasError.value = false
-  emit('logged-in', doctor)
 }
 </script>
 
@@ -65,28 +77,32 @@ function submit() {
           <span>Usa las credenciales que te dio el equipo de Wawa Qhali.</span>
         </div>
 
-        <div v-if="hasError" role="alert" class="login__error">
+        <div v-if="sessionExpired && !errorMessage" role="status" class="login__notice">
+          Tu sesión venció. Vuelve a ingresar.
+        </div>
+        <div v-if="errorMessage" role="alert" class="login__error">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A33A2A" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5h.01" /></svg>
-          <span>Correo o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.</span>
+          <span>{{ errorMessage }}</span>
         </div>
 
         <div class="field">
-          <label for="email">Correo</label>
+          <label for="username">Usuario</label>
           <input
-            id="email"
-            v-model="email"
-            type="email"
+            id="username"
+            v-model="username"
+            type="text"
             autocomplete="username"
-            placeholder="nombre@correo.com"
+            autocapitalize="none"
+            spellcheck="false"
             class="field__box"
-            :class="{ 'field__box--error': hasError }"
+            :class="{ 'field__box--error': errorMessage }"
             required
           />
         </div>
 
         <div class="field">
           <label for="password">Contraseña</label>
-          <div class="field__box field__box--with-button" :class="{ 'field__box--error': hasError }">
+          <div class="field__box field__box--with-button" :class="{ 'field__box--error': errorMessage }">
             <input
               id="password"
               v-model="password"
@@ -105,7 +121,9 @@ function submit() {
           </div>
         </div>
 
-        <button type="submit" class="btn btn--primary login__submit">Ingresar</button>
+        <button type="submit" class="btn btn--primary login__submit" :disabled="loading">
+          {{ loading ? 'Ingresando…' : 'Ingresar' }}
+        </button>
         <span class="login__help">¿Olvidaste tu contraseña? Escribe al equipo de Wawa Qhali para restablecerla.</span>
       </form>
     </section>
@@ -200,6 +218,18 @@ function submit() {
 }
 .login__error svg {
   flex-shrink: 0;
+}
+.login__notice {
+  border-radius: 14px;
+  background: var(--amber-bg);
+  color: var(--amber-text);
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.login__submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
 .field {
   display: flex;
