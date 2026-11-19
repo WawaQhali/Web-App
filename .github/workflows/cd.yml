@@ -1,0 +1,72 @@
+name: CD
+
+# Despliegue continuo de la web del médico: en cada push a main se compila con Vite,
+# se publica la imagen en ACR y se actualiza el Container App wawa-web.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  id-token: write # OIDC con Azure: no hay contraseñas guardadas en GitHub
+  contents: read
+
+concurrency:
+  group: cd-web-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RG: rg-wawaqhali
+  ACR: acrwawaqxv8s
+  APP: wawa-web
+  IMAGEN: acrwawaqxv8s.azurecr.io/wawa-web
+  VITE_API_URL: ${{ vars.VITE_API_URL || 'https://wawa-backend.salmonforest-a5ba81d5.centralus.azurecontainerapps.io' }}
+
+jobs:
+  compilar:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  desplegar:
+    needs: compilar
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Iniciar sesión en Azure (identidad id-wawa-ci)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Construir y publicar la imagen
+        id: imagen
+        run: |
+          TAG="${IMAGEN}:$(git rev-parse --short=12 HEAD)"
+          az acr login --name "$ACR"
+          docker build --build-arg VITE_API_URL="$VITE_API_URL" -t "$TAG" .
+          docker push "$TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Actualizar el Container App
+        run: az containerapp update -g "$RG" -n "$APP" --image "${{ steps.imagen.outputs.tag }}" -o none
+
+      - name: Verificar
+        run: |
+          URL="https://$(az containerapp show -g "$RG" -n "$APP" --query properties.configuration.ingress.fqdn -o tsv)"
+          for i in $(seq 1 20); do
+            if curl -fsS -m 30 -o /dev/null "$URL/"; then echo "Desplegado en $URL"; exit 0; fi
+            sleep 10
+          done
+          echo "La web no respondió" >&2
+          exit 1
