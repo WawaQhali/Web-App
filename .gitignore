@@ -5,3 +5,7 @@ dist/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Variables locales (la URL del backend)
+.env
+.env.local
