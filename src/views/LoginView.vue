@@ -16,6 +16,7 @@ const loading = ref(false)
 
 const MESSAGES = {
   401: 'Usuario o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.',
+  403: 'Esta web es solo para el médico.',
   429: 'Demasiados intentos. Espera un minuto y vuelve a intentarlo.',
   0: 'No se pudo conectar con el servidor de Wawa Qhali. Revisa tu conexión.',
 }

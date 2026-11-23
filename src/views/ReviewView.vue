@@ -137,7 +137,7 @@ onMounted(loadQueue)
         <span class="pill pill--green">Coincide con la app: {{ matchRate }}</span>
         <span class="topbar__doctor">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B5D50" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" /><circle cx="12" cy="10" r="3.2" /><path d="M6.5 18.2a6.5 6.5 0 0 1 11 0" /></svg>
-          {{ doctor.usuario }} · {{ doctor.rol === 'medico' ? 'Médico' : doctor.rol }}
+          {{ doctor.nombre }}
         </span>
         <button type="button" class="btn btn--text" @click="$emit('logout')">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="M16 17l5-5-5-5M21 12H9" /></svg>
