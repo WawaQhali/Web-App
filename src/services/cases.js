@@ -35,6 +35,14 @@ function formatDate(iso) {
   return `${two(d.getDate())}/${two(d.getMonth() + 1)}/${d.getFullYear()} a las ${two(d.getHours())}:${two(d.getMinutes())}`
 }
 
+/** «Niña · 3 años». null si la donación es de una versión de la app que no los pedía. */
+function childText(prelim) {
+  const parts = []
+  if (prelim.sexo) parts.push(prelim.sexo === 'femenino' ? 'Niña' : 'Niño')
+  if (prelim.edad_anios) parts.push(`${prelim.edad_anios} ${prelim.edad_anios === 1 ? 'año' : 'años'}`)
+  return parts.length ? parts.join(' · ') : null
+}
+
 function answerText(question, value) {
   if (question.respuesta === 'si_no') return value ? 'Sí' : 'No'
   return question.opciones.find((o) => o.id === value)?.texto ?? value
@@ -56,6 +64,7 @@ export async function getCase(id) {
     prediction: prelim.clase,
     confidence: prelim.confianza,
     modelVersion: prelim.version_modelo,
+    child: childText(prelim),
     hasAlarm: answered('riesgo').some((q) => respuestas[q.id] === true),
     symptoms: answered('normal').map((q) => ({
       question: q.texto,

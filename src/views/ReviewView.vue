@@ -168,6 +168,11 @@ onMounted(loadQueue)
           <h1>Caso #{{ current.shortId }}</h1>
           <span>Recibido el {{ current.receivedAt }} · quedan {{ pending }}</span>
         </div>
+        <div class="child">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.5" /><path d="M5.5 20.5a6.5 6.5 0 0 1 13 0" /></svg>
+          <span v-if="current.child">{{ current.child }}</span>
+          <span v-else class="child--missing">Edad y sexo no registrados</span>
+        </div>
 
         <span class="eyebrow section-label">IMAGEN</span>
         <div class="card image-card">
@@ -323,6 +328,19 @@ onMounted(loadQueue)
 }
 .case-title span {
   font-size: 13px;
+  color: var(--muted);
+}
+.child {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brown);
+}
+.child--missing {
+  font-weight: 500;
   color: var(--muted);
 }
 .section-label {
