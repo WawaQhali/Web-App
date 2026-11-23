@@ -26,9 +26,9 @@ To have cases to review locally, run `uv run python -m scripts.sembrar_demo` in 
 
 | Screen action | Backend |
 | --- | --- |
-| Login | `POST /v1/auth/login` → JWT valid for 1 hour (back to login when it expires) |
+| Login (doctor only) | `POST /v1/auth/login` → JWT valid for 1 hour (back to login when it expires). The backend only has the `medico` role; any other role is rejected |
 | Pending cases | `GET /v1/revision/pendientes` |
-| Case detail and photo | `GET /v1/revision/{id}` (the photo link expires in 5 minutes) |
+| Case detail and photo | `GET /v1/revision/{id}` (the photo link expires in 5 minutes). Shows the child's sex and age (1 to 4 years) from `etiqueta_preliminar.sexo` / `.edad_anios` |
 | Sí / No / La foto no sirve | `POST /v1/revision/{id}/etiqueta` with `compatible` / `no_compatible` / `no_evaluable` |
 | Deshacer | Goes back to the case; deciding again overwrites the label |
 | Eliminar imagen | `POST /v1/revision/{id}/eliminar` |
